@@ -5,9 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigService } from './config.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-export function initializeApp(configService: ConfigService): () => Promise<void> {
-  return () => configService.loadConfig();
+export function initializeApp(configService: ConfigService, router: Router): () => Promise<void> {
+  return async () => {
+    try {
+      await configService.loadConfig();
+    } catch (error) {
+      console.error('Initialization Failed:', error);
+      // Redirect to error page or handle error as needed
+      router.navigateByUrl('/error');
+    }
+  };
 }
 
 @NgModule({
