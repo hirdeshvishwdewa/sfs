@@ -1,0 +1,10 @@
+<ng-container *ngIf="message">
+    <div class="alert alert-danger" [title]="message">
+        <div class="d-flex justify-content-between">
+            <div class="message">
+                {{message}}
+            </div>
+            <div><a class="cross" (click)="close()">x</a></div>
+        </div>
+    </div>
+</ng-container>

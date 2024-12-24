@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
+import { firstValueFrom, retry } from 'rxjs';
+import { ApiService } from 'src/core/api.service';
+import { IConfig } from './modules/shared/shared.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
-  private static DEFAULT_BASE_URL = 'https://mock-api.assessment.sfsdm.org';
   private config: IConfig;
 
-  constructor(private http: HttpClient) {
+  constructor(private api: ApiService, private router: Router) {
     this.config = { } as IConfig;
   }
 
   loadConfig(): Promise<void> {
-    const configUrl = this.getApiBaseUrl() + '/config';
-    return firstValueFrom(this.http.get<IConfig>(configUrl))
+    const configUri = '/config';
+    return firstValueFrom(this.api.get<IConfig>(configUri).pipe(retry(3)))
       .then((configData: IConfig) => {
         this.config = configData;
-        console.log('Configuration Loaded:', this.config);
       })
       .catch((error) => {
-        console.error('Failed to load configuration:', error);
-        throw error;
+        this.router.navigateByUrl('/error');
       });
   }
 
@@ -30,19 +29,7 @@ export class ConfigService {
     return this.config;
   }
 
-  getApiBaseUrl(): string {
-    return ConfigService.DEFAULT_BASE_URL;
-  }
-
   getEnvironment(): string {
     return this.config?.environment || 'Unknown';
   }
-}
-
-interface IConfig {
-  availableLanguages: string[],
-  environment: string,
-  environmentColour: string,
-  environmentName: string,
-  endpoints: unknown
 }

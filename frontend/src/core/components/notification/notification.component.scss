@@ -1,0 +1,21 @@
+.alert {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    width: 400px;
+    top: 25px;
+    line-height: 18px;
+    height: 32px;
+    padding: 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translate(-200px);
+}
+
+.cross {
+    font-size: 14px;
+    text-decoration: none;
+    color: grey;
+    cursor: pointer;
+}

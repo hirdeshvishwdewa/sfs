@@ -6,27 +6,23 @@ import { AppComponent } from './app.component';
 import { ConfigService } from './config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CoreModule } from 'src/core/core.module';
 
 export function initializeApp(configService: ConfigService, router: Router): () => Promise<void> {
   return async () => {
-    try {
-      await configService.loadConfig();
-    } catch (error) {
-      console.error('Initialization Failed:', error);
-      // Redirect to error page or handle error as needed
-      router.navigateByUrl('/error');
-    }
+    await configService.loadConfig();
   };
 }
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CoreModule
   ],
   providers: [
     ConfigService,

@@ -1,0 +1,46 @@
+<div class="card card-scrollable">
+    <div class="card-body">
+        <h2 class="card-title">
+            Order Details
+        </h2>
+        <div class="card-description">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>Production Target</td>
+                            <td>Production State</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="orderData$ | async as order; else loadingOrderDetails">
+                            <ng-container *ngIf="order; else noData">
+                                <tr>
+                                    <td>
+                                        {{ order.productionTarget }}
+                                    </td>
+                                    <td>
+                                        {{ order.productionState }}
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <ng-template #loadingOrderDetails>
+            <tr class="loading-content">
+                <td><div>&nbsp;</div></td>
+                <td><div>&nbsp;</div></td>
+            </tr>
+        </ng-template>
+        
+        <ng-template #noData>
+            <tr>
+                <td colspan="2">No devices found.</td>
+            </tr>
+        </ng-template>
+    </div>
+</div>

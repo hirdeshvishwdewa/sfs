@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="main-container d-flex flex-column">
+    <div class="header-wrapper d-flex">
+        <button (click)="showDemoNotification()">Alert</button>
+    </div>
+    <div class="main-content-wrapper">
+        <ng-container *ngIf="notification$ | async as notification">
+            <notification [message]="notification"></notification>
+        </ng-container>
+        <router-outlet></router-outlet>
+    </div>
+</div>

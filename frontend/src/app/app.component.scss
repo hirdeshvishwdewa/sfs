@@ -1,0 +1,14 @@
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    color: white;
+    .header-wrapper {
+        height: 70px;
+        background: #191c24;
+    }
+    .main-content-wrapper {
+        height: calc(100vh - 70px);
+        padding: 20px;
+    }
+}

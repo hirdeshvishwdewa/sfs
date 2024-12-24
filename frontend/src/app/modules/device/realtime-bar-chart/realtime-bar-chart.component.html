@@ -1,0 +1,4 @@
+<div #chart class="chart" [ngClass]="{'hide-chart': data.length === 0}"></div>
+<div *ngIf="data.length === 0" class="loading-content">
+    <div class="chart-loading">&nbsp;</div>
+</div>
