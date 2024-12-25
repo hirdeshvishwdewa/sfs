@@ -1,0 +1,13 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        {{ defaultValue }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+        <li *ngFor="let item of items">
+            <a class="dropdown-item" href="#" (click)="optionClickHandler(item)">
+                {{ item }}
+            </a>
+        </li>
+    </ul>
+</div>

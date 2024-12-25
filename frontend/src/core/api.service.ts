@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
     private static DEFAULT_BASE_URL = 'https://mock-api.assessment.sfsdm.org';
-
+    private endpoints = {} as IAPIEndpoint;
     constructor(private http: HttpClient) { }
 
     get<T>(uri: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
@@ -35,6 +35,14 @@ export class ApiService {
         });
     }
 
+    getAPIEndPoints(): IAPIEndpoint {
+        return this.endpoints;
+    }
+
+    setAPIEndpoints(endpoints: IAPIEndpoint) {
+        this.endpoints = endpoints;
+    }
+
     private getFullURL (uri: string) {
         return this.getApiBaseUrl() + uri
     }
@@ -42,4 +50,11 @@ export class ApiService {
     private getApiBaseUrl(): string {
         return ApiService.DEFAULT_BASE_URL;
     }
+}
+
+export interface IAPIEndpoint {
+    config: string,
+    devices: string,
+    events: string,
+    order: string
 }

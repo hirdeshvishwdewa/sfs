@@ -1,16 +1,16 @@
 <div class="card card-scrollable">
     <div class="card-body">
         <h2 class="card-title">
-            Devices
+            {{ 'screen.dashboard.headings.deviceList' | translate }}
         </h2>
         <div class="card-description">
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <td>S. No</td>
-                            <td>Device Name</td>
-                            <td>Device Id</td>
+                            <td>{{ 'screen.dashboard.labels.srNo' | translate }}</td>
+                            <td>{{ 'screen.dashboard.labels.deviceName' | translate }}</td>
+                            <td>{{ 'screen.dashboard.labels.deviceId' | translate }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +43,7 @@
         </ng-template>
         
         <ng-template #noDevices>
-            <p>No devices found.</p>
+            <p>{{ 'screen.dashboard.messages.noDeviceFound' | translate }}</p>
         </ng-template>
     </div>
 </div>

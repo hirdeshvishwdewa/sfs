@@ -1,0 +1,38 @@
+{
+    "global": {
+        "header": {
+            "environment": "Environment Name",
+            "selectLanguage": "Language"
+        }
+    },
+    "screen": {
+        "dashboard": {
+            "headings": {
+                "deviceList": "Device List"
+            },
+            "labels": {
+                "srNo": "Sr. No.",
+                "deviceName": "Device Name",
+                "deviceId": "Device Id"
+            },
+            "messages": {
+                "noDeviceFound": "No Device Found!"
+            }
+        },
+        "device": {
+            "headings": {
+                "realtimeUpdates": "Realtime Graph",
+                "deviceEvents": "Device Events"
+            },
+            "labels": {
+                "eventTime": "Event time",
+                "deviceStatus": "Device Status",
+                "devicePPM": "Device PPM",
+                "orderId": "Order Id"
+            },
+            "messages": {
+                "couldNotLoadGraph": "Could not load the graph"
+            }
+        }
+    }
+  }

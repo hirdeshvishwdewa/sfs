@@ -1,5 +1,5 @@
 // File: src/app/components/realtime-barchart/realtime-barchart.component.ts
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Input, SimpleChange } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, SimpleChange } from '@angular/core';
 import * as d3 from 'd3';
 import { Subscription } from 'rxjs';
 import { IDeviceDetail } from '../../shared/shared.model';
@@ -9,7 +9,7 @@ import { IDeviceDetail } from '../../shared/shared.model';
   templateUrl: './realtime-bar-chart.component.html',
   styleUrls: ['./realtime-bar-chart.component.scss'],
 })
-export class RealtimeBarchartComponent implements OnInit, OnDestroy {
+export class RealtimeBarchartComponent {
   @ViewChild('chart', { static: true }) chartContainer!: ElementRef;
   @Input() data: IDeviceDetail[] = [];
 
@@ -18,16 +18,12 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
   private yScale: any;
   private xAxis: any;
   private yAxis: any;
-  private eventSubscription!: Subscription;
-  private margin = { top: 20, right: 90, bottom: 50, left: 50 };
+  private margin = { top: 20, right: 120, bottom: 50, left: 30 };
   private width = window.innerWidth - this.margin.left - this.margin.right;
   private height = 200 - this.margin.top - this.margin.bottom;
 
   constructor() {}
 
-  ngOnInit(): void {
-  }
-  
   ngAfterViewInit() {
     this.createChart();
   }
@@ -35,12 +31,6 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
   ngOnChanges(change: SimpleChange) {
     if (!change.firstChange) {
       this.updateChart();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscription) {
-      this.eventSubscription.unsubscribe();
     }
   }
 
@@ -68,9 +58,11 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(0, ${this.height})`)
       .attr('class', 'x-axis');
 
-    // Y axis
-    this.yAxis = this.svg.append('g').attr('class', 'y-axis');
-
+    this.yAxis = this.svg
+      .append('g')
+      .attr('class', 'y-axis')
+      .attr('transform', `translate(${this.width}, 0)`); // Move Y-axis to the right
+  
     // Label axes
     this.svg
       .append('text')
@@ -79,12 +71,10 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
       .style('stroke', 'white')
       .text('Time');
 
+    // Add Y-axis label
     this.svg
       .append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', -this.margin.left)
-      .attr('x', -this.height / 2)
-      .attr('dy', '1em')
+      .attr('transform', `translate(${this.width + 45}, ${this.height / 2}) rotate(-90)`)
       .style('text-anchor', 'middle')
       .style('stroke', 'white')
       .text('Parts Per Minute (PPM)');
@@ -94,8 +84,8 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
     if (!this.xScale || !this.yScale) {
       return;
     }
-    if (this.data.length > 18) {
-      this.data.splice(0, 1);
+    if (this.data.length > 20) {
+      this.data.pop();
     }
     const now = new Date();
     const past = new Date(now.getTime() - 60000); // Show last 60 seconds
@@ -138,7 +128,7 @@ export class RealtimeBarchartComponent implements OnInit, OnDestroy {
 
     // Update axes
     this.svg.select('.x-axis').transition().duration(500).call(d3.axisBottom(this.xScale));
-    this.svg.select('.y-axis').transition().duration(500).call(d3.axisLeft(this.yScale));
+    this.svg.select('.y-axis').transition().duration(500).call(d3.axisRight(this.yScale));
   }
 
 }

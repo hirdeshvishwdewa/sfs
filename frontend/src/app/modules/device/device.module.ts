@@ -4,6 +4,7 @@ import { DevicesRoutingModule } from './devices-routing.module';
 import { DeviceDetailComponent } from './device-detail/device-detail.component';
 import { RealtimeBarchartComponent } from './realtime-bar-chart/realtime-bar-chart.component';
 import { SharedModule } from '../shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     DevicesRoutingModule,
+    TranslateModule.forChild(),
     SharedModule
   ]
 })

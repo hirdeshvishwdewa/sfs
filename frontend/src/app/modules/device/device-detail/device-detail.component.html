@@ -1,61 +1,69 @@
 <div class="card">
   <div class="card-body">
-      <h2 class="card-title">
-          Realtime Updates
-        </h2>
-        <div class="card-description">
-          <app-realtime-barchart [data]="events"></app-realtime-barchart>
-        </div>
-</div>
+    <h2 class="card-title">
+      {{'screen.device.headings.realtimeUpdates' | translate}}
+    </h2>
+    <div class="card-description">
+      <app-realtime-barchart [data]="events"></app-realtime-barchart>
+    </div>
+  </div>
 </div>
 <div class="card device-events-wrapper" #eventWrapper>
   <div class="card-body">
-      <h2 class="card-title">
-        Device Events
-        </h2>
-        <div class="card-description">
-          <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <td>Event time</td>
-                        <td>Device Status</td>
-                        <td>Device PPM</td>
-                        <td>Order Id</td>
-                    </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngIf="events.length; else noDetails">
-                      <tr *ngFor="let event of events">
-                          <td>
-                            <span> {{ event.timestamp | date: 'd:M:yy h:mm a' }} </span>
-                          </td>
-                          <td>
-                            <span class="p-1" [highlightStatus]="event.status">{{ event.status }}</span>
-                          </td>
-                          <td>
-                            {{ event.partsPerMinute | number:'1.2-2' }}
-                          </td>
-                          <td>
-                            <a [routerLink]="['/orders/' + event.order ]">{{ event.order }} </a>
-                          </td>
-                      </tr>
-                  </ng-container>
-                </tbody>
-            </table>
-        </div>
-        </div>
+    <h2 class="card-title">
+      {{'screen.device.headings.deviceEvents' | translate}}
+    </h2>
+    <div class="card-description">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>{{'screen.device.labels.eventTime' | translate}}</td>
+              <td>{{'screen.device.labels.deviceStatus' | translate}}</td>
+              <td>{{'screen.device.labels.devicePPM' | translate}}</td>
+              <td>{{'screen.device.labels.orderId' | translate}}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="events.length; else noDetails">
+              <tr *ngFor="let event of events">
+                <td>
+                  <span> {{ event.timestamp | date: 'd:M:yy h:mm a' }} </span>
+                </td>
+                <td>
+                  <span class="p-1" [highlightStatus]="event.status">{{ event.status }}</span>
+                </td>
+                <td>
+                  {{ event.partsPerMinute | number:'1.2-2' }}
+                </td>
+                <td>
+                  <a [routerLink]="['/orders/' + event.order ]">{{ event.order }} </a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
-  <ng-template #noDetails>
-    <tr class="loading-content">
-      <td><div>&nbsp;</div></td>
-      <td><div>&nbsp;</div></td>
-      <td><div>&nbsp;</div></td>
-      <td><div>&nbsp;</div></td>
-    </tr>
-  </ng-template>
+<ng-template #noDetails>
+  <tr class="loading-content">
+    <td>
+      <div>&nbsp;</div>
+    </td>
+    <td>
+      <div>&nbsp;</div>
+    </td>
+    <td>
+      <div>&nbsp;</div>
+    </td>
+    <td>
+      <div>&nbsp;</div>
+    </td>
+  </tr>
+</ng-template>
 <ng-template #noGraph>
-  <div> &nbsp; </div>
+  <div> {{'screen.device.messages.couldNotLoadGraph' | translate}} </div>
 </ng-template>

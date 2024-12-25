@@ -1,0 +1,13 @@
+<div class="header-wrapper d-flex justify-content-end p-3 border-bottom">
+    <div class="pe-3" *ngIf="config$ | async as config;">
+        {{'global.header.environment' | translate }} <span [ngStyle]="{ 'background-color': config?.environmentColour}"
+            class="environment-name">{{ config?.environmentName }}</span>
+    </div>
+    <div class="d-flex">
+        <div class="pe-3">{{'global.header.selectLanguage' | translate }}</div>
+        <app-dropdown [defaultValue]="currentLanguage" [items]="availableLanguages" (optionClicked)="changeLanguage($event)"></app-dropdown>
+    </div>
+    <ng-container *ngIf="notification$ | async as notification">
+        <notification [message]="notification | translate"></notification>
+    </ng-container>
+</div>

@@ -1,0 +1,38 @@
+{
+  "global": {
+      "header": {
+          "environment": "Umgebungsname",
+          "selectLanguage": "Sprache"
+      }
+  },
+  "screen": {
+      "dashboard": {
+          "headings": {
+              "deviceList": "Geräteliste"
+          },
+          "labels": {
+              "srNo": "Nr.",
+              "deviceName": "Gerätename",
+              "deviceId": "Geräte-ID"
+          },
+          "messages": {
+              "noDeviceFound": "Kein Gerät gefunden!"
+          }
+      },
+      "device": {
+          "headings": {
+              "realtimeUpdates": "Echtzeitdiagramm",
+              "deviceEvents": "Geräteereignisse"
+          },
+          "labels": {
+              "eventTime": "Ereigniszeit",
+              "deviceStatus": "Gerätestatus",
+              "devicePPM": "Geräte-PPM",
+              "orderId": "Bestellnummer"
+          },
+          "messages": {
+              "couldNotLoadGraph": "Diagramm konnte nicht geladen werden"
+          }
+      }
+  }
+}

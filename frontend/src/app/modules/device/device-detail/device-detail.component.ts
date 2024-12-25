@@ -15,6 +15,7 @@ export class DeviceDetailComponent implements OnDestroy {
   subscriptions: Subscription = new Subscription();
   deviceId = "";
   events: IDeviceDetail[] = [];
+
   constructor(private dataService: SharedDataService, private route: ActivatedRoute, private cdref: ChangeDetectorRef, private notficationService: NotificationService) {
     this.subscriptions = this.getRouterParams();
   }
@@ -34,22 +35,16 @@ export class DeviceDetailComponent implements OnDestroy {
   }
 
   private prepareStreamData() {
-    this.subscriptions = this.dataService.getDevice(this.deviceId).subscribe({
+    this.subscriptions = this.dataService.getDeviceEvents(this.deviceId).subscribe({
       next: (event: IDeviceDetail) => {
-        this.events.push(event);
+        this.events.unshift(event);
         this.events = [...this.events];
         this.cdref.detectChanges();
-        this.scrollToBottom();
       },
       error: (err) => {
         this.notficationService.sendNotification("Error occurred while fetching realtime data.");
       },
     }
     );
-  }
-
-  private scrollToBottom () {
-    const element = this.eventWrapper.nativeElement;
-    element.scrollTop = element.scrollHeight;
   }
 }

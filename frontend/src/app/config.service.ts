@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom, retry } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, interval, Observable, retry, switchMap } from 'rxjs';
 import { ApiService } from 'src/core/api.service';
 import { IConfig } from './modules/shared/shared.model';
 
@@ -9,20 +9,22 @@ import { IConfig } from './modules/shared/shared.model';
 })
 export class ConfigService {
   private config: IConfig;
+  private configSubject: any;
+  config$: Observable<IConfig> = {} as Observable<IConfig>;
 
   constructor(private api: ApiService, private router: Router) {
-    this.config = { } as IConfig;
+    this.config = {} as IConfig;
   }
 
-  loadConfig(): Promise<void> {
-    const configUri = '/config';
-    return firstValueFrom(this.api.get<IConfig>(configUri).pipe(retry(3)))
-      .then((configData: IConfig) => {
-        this.config = configData;
-      })
-      .catch((error) => {
-        this.router.navigateByUrl('/error');
-      });
+  async loadConfig(): Promise<void> {
+    try {
+      const configData = await firstValueFrom(this.configAPICall().pipe(retry(3)));
+      this.config = configData;
+      this.api.setAPIEndpoints(this.config.endpoints);
+      this.startPeriodicConfigFetch(configData);
+    } catch (error) {
+      this.router.navigateByUrl('/error');
+    }
   }
 
   getConfig(): IConfig {
@@ -31,5 +33,21 @@ export class ConfigService {
 
   getEnvironment(): string {
     return this.config?.environment || 'Unknown';
+  }
+
+  private configAPICall(): Observable<IConfig> {
+    const configUri = '/config';
+    return this.api.get<IConfig>(configUri);
+  }
+
+  private startPeriodicConfigFetch(configData: IConfig): void {
+    this.configSubject = new BehaviorSubject<IConfig>(configData);
+    this.config$ = this.configSubject.asObservable();
+    interval(15000)
+    .pipe(switchMap(() => this.configAPICall()))
+    .subscribe((config: IConfig) => {
+      this.config = config;
+      this.configSubject.next(config);
+    });
   }
 }

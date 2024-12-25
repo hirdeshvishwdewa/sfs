@@ -11,14 +11,14 @@ export class SharedDataService {
     constructor(private api: ApiService) { }
 
     getDevices(): Observable<string[]> {
-        return this.api.get(`/devices`);
+        return this.api.get(this.api.getAPIEndPoints()?.devices);
     }
 
     getOrder(orderId: string): Observable<IOrderDetails> {
-        return this.api.get(`/order/` + orderId);
+        return this.api.get(this.api.getAPIEndPoints()?.order?.replace("{orderId}", orderId));
     }
 
-    getDevice(id: string) {
-        return this.api.getStream<IDeviceDetail>('/events/' + id);
+    getDeviceEvents(deviceId: string) {
+        return this.api.getStream<IDeviceDetail>(this.api.getAPIEndPoints()?.events?.replace("{deviceId}", deviceId));
     }
 }
