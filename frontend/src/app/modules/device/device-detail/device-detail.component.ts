@@ -46,7 +46,7 @@ export class DeviceDetailComponent implements OnDestroy {
   }
 
   private prepareStreamData() {
-    this.subscriptions = this.dataService.getDeviceEvents(this.deviceId).subscribe({
+    this.subscriptions.add(this.dataService.getDeviceEvents(this.deviceId).subscribe({
       next: (event: IDeviceDetail) => {
         this.events.unshift(event);
         this.events = [...this.events];
@@ -56,7 +56,7 @@ export class DeviceDetailComponent implements OnDestroy {
         this.notficationService.sendNotification("Error occurred while fetching realtime data.");
       },
     }
-    );
+    ));
   }
 
   private getTranslations(): Subscription {
