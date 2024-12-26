@@ -14,6 +14,7 @@ export class DropdownComponent {
     optionClicked = new EventEmitter<any>();
 
     optionClickHandler(option: any) {
+        this.defaultValue = option;
         this.optionClicked.emit(option);
     }
 }
