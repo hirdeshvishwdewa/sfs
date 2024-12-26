@@ -1,8 +1,8 @@
 // File: src/app/components/realtime-barchart/realtime-barchart.component.ts
-import { Component, ElementRef, ViewChild, Input, SimpleChange } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, SimpleChange, HostListener } from '@angular/core';
 import * as d3 from 'd3';
-import { Subscription } from 'rxjs';
 import { IDeviceDetail } from '../../shared/shared.model';
+import { TranslationObject } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-realtime-barchart',
@@ -12,6 +12,7 @@ import { IDeviceDetail } from '../../shared/shared.model';
 export class RealtimeBarchartComponent {
   @ViewChild('chart', { static: true }) chartContainer!: ElementRef;
   @Input() data: IDeviceDetail[] = [];
+  @Input() translations: TranslationObject = {};
 
   private svg: any;
   private xScale: any;
@@ -19,12 +20,14 @@ export class RealtimeBarchartComponent {
   private xAxis: any;
   private yAxis: any;
   private margin = { top: 20, right: 120, bottom: 50, left: 30 };
-  private width = window.innerWidth - this.margin.left - this.margin.right;
-  private height = 200 - this.margin.top - this.margin.bottom;
+  private width = 0;
+  private height= 0;
+  private annimationDuration = 500;
 
-  constructor() {}
+  constructor() { }
 
   ngAfterViewInit() {
+    this.setDimensions();
     this.createChart();
   }
 
@@ -62,14 +65,14 @@ export class RealtimeBarchartComponent {
       .append('g')
       .attr('class', 'y-axis')
       .attr('transform', `translate(${this.width}, 0)`); // Move Y-axis to the right
-  
+
     // Label axes
     this.svg
       .append('text')
-      .attr('transform', `translate(${this.width / 2}, ${this.height + 40})`)
+      .attr('transform', `translate(${this.width / 2}, ${this.height + 50})`)
       .style('text-anchor', 'middle')
       .style('stroke', 'white')
-      .text('Time');
+      .text(this.translations['screen.device.labels.graphXAxisLabel']);
 
     // Add Y-axis label
     this.svg
@@ -77,7 +80,7 @@ export class RealtimeBarchartComponent {
       .attr('transform', `translate(${this.width + 45}, ${this.height / 2}) rotate(-90)`)
       .style('text-anchor', 'middle')
       .style('stroke', 'white')
-      .text('Parts Per Minute (PPM)');
+      .text(this.translations['screen.device.labels.graphYAxisLabel']);
   }
 
   private updateChart(): void {
@@ -106,29 +109,57 @@ export class RealtimeBarchartComponent {
       .attr('class', 'bar')
       .attr('x', (d: any) => this.xScale(d.timestamp))
       .attr('y', this.height)
-      .attr('width', 10)
+      .attr('width', 5)
       .attr('height', 0)
       .attr('fill', (d: any) => colorScale(d.status)) // Set bar color based on status
       .transition()
-      .duration(500)
+      .duration(this.annimationDuration)
       .attr('y', (d: any) => this.yScale(d.partsPerMinute))
       .attr('height', (d: any) => this.height - this.yScale(d.partsPerMinute));
-
     // Update existing bars
     bars
       .transition()
-      .duration(500)
+      .duration(this.annimationDuration)
       .attr('x', (d: any) => this.xScale(d.timestamp))
       .attr('y', (d: any) => this.yScale(d.partsPerMinute))
       .attr('height', (d: any) => this.height - this.yScale(d.partsPerMinute))
       .attr('fill', (d: any) => colorScale(d.status)); // Update color
 
     // Remove old bars
-    bars.exit().transition().duration(500).attr('height', 0).attr('y', this.height).remove();
+    bars.exit().transition().duration(this.annimationDuration).attr('height', 0).attr('y', this.height).remove();
 
     // Update axes
-    this.svg.select('.x-axis').transition().duration(500).call(d3.axisBottom(this.xScale));
-    this.svg.select('.y-axis').transition().duration(500).call(d3.axisRight(this.yScale));
+    this.svg.select('.x-axis').transition().duration(this.annimationDuration)
+      .call(
+        d3.axisBottom(this.xScale)
+        .tickFormat(
+          (domainValue: d3.AxisDomain) => d3.timeFormat('%H:%M:%S')(domainValue as Date)
+        )
+      );
+    this.svg.selectAll('.x-axis .tick text')
+      .attr('transform', 'rotate(25)')
+      .style('text-anchor', 'start')
+      .attr('dx', '0.5em')
+      .attr('dy', '0.1em');     
+    this.svg.select('.y-axis').transition().duration(this.annimationDuration).call(d3.axisRight(this.yScale));
   }
 
+  private redrawChart(): void {
+    // Remove existing SVG
+    d3.select(this.chartContainer.nativeElement.querySelector('svg')).remove();
+
+    // Recreate the chart
+    this.createChart();
+    this.updateChart();
+  }
+  private setDimensions(): void {
+    this.width = window.innerWidth - this.margin.left - this.margin.right;
+    this.height = 200 - this.margin.top - this.margin.bottom;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.setDimensions();
+    this.redrawChart();
+  }
 }

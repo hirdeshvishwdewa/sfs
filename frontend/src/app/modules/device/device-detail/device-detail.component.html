@@ -4,7 +4,7 @@
       {{'screen.device.headings.realtimeUpdates' | translate}}
     </h2>
     <div class="card-description">
-      <app-realtime-barchart [data]="events"></app-realtime-barchart>
+      <app-realtime-barchart [data]="events" [translations]="translations"></app-realtime-barchart>
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@
                   {{ event.partsPerMinute | number:'1.2-2' }}
                 </td>
                 <td>
-                  <a [routerLink]="['/orders/' + event.order ]">{{ event.order }} </a>
+                  <a [routerLink]="['/orders', event.order ]">{{ event.order }} </a>
                 </td>
               </tr>
             </ng-container>

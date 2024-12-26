@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SharedDataService } from '../../shared/shared-data.service';
-import { Observable, Subscription } from 'rxjs';
+import { catchError, Observable, of, Subscription } from 'rxjs';
 import { IOrderDetails } from '../../shared/shared.model';
 
 @Component({
@@ -14,8 +14,10 @@ export class OrderDetailsComponent implements OnDestroy {
   orderId = "";
   orderData$: Observable<IOrderDetails>;
   constructor(private dataService: SharedDataService, private route: ActivatedRoute) {
-    this.subscriptions = this.getRouterParams();
-    this.orderData$ = this.dataService.getOrder(this.orderId);
+    this.subscriptions.add(this.getRouterParams());
+    this.orderData$ = this.dataService.getOrder(this.orderId).pipe(
+      catchError(() => of({} as IOrderDetails))
+    );
   }
 
   private getRouterParams() {

@@ -16,7 +16,10 @@ export class HeaderComponent {
     availableLanguages = ['en', 'de'];
     defaultLanguage = 'en';
     currentLanguage = this.defaultLanguage;
-    constructor(private notificationService: NotificationService, private configService: ConfigService, private translate: TranslateService) {
+    constructor(private notificationService: NotificationService,
+        private configService: ConfigService, 
+        private translate: TranslateService
+    ) {
         this.config$ = this.configService.config$;
         this.handleLanguageChange();
     }

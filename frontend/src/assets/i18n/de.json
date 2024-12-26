@@ -1,38 +1,52 @@
 {
-  "global": {
-      "header": {
-          "environment": "Umgebungsname",
-          "selectLanguage": "Sprache"
-      }
-  },
-  "screen": {
-      "dashboard": {
-          "headings": {
-              "deviceList": "Geräteliste"
-          },
-          "labels": {
-              "srNo": "Nr.",
-              "deviceName": "Gerätename",
-              "deviceId": "Geräte-ID"
-          },
-          "messages": {
-              "noDeviceFound": "Kein Gerät gefunden!"
-          }
-      },
-      "device": {
-          "headings": {
-              "realtimeUpdates": "Echtzeitdiagramm",
-              "deviceEvents": "Geräteereignisse"
-          },
-          "labels": {
-              "eventTime": "Ereigniszeit",
-              "deviceStatus": "Gerätestatus",
-              "devicePPM": "Geräte-PPM",
-              "orderId": "Bestellnummer"
-          },
-          "messages": {
-              "couldNotLoadGraph": "Diagramm konnte nicht geladen werden"
-          }
-      }
-  }
+    "global": {
+        "header": {
+            "environment": "Umgebungsname",
+            "selectLanguage": "Sprache"
+        }
+    },
+    "screen": {
+        "dashboard": {
+            "headings": {
+                "deviceList": "Geräteliste"
+            },
+            "labels": {
+                "srNo": "Nr.",
+                "deviceName": "Gerätename",
+                "deviceId": "Geräte-ID"
+            },
+            "messages": {
+                "noDeviceFound": "Kein Gerät gefunden!"
+            }
+        },
+        "device": {
+            "headings": {
+                "realtimeUpdates": "Echtzeitdiagramm",
+                "deviceEvents": "Geräteereignisse"
+            },
+            "labels": {
+                "eventTime": "Ereigniszeit",
+                "deviceStatus": "Gerätestatus",
+                "devicePPM": "Geräte-PPM",
+                "orderId": "Bestellnummer",
+                "graphYAxisLabel": "Teile pro Minute (TPM)",
+                "graphXAxisLabel": "Zeit"
+            },
+            "messages": {
+                "couldNotLoadGraph": "Diagramm konnte nicht geladen werden"
+            }
+        },
+        "order": {
+            "headings": {
+                "orderDetails": "Bestelldetails"
+            },
+            "labels": {
+                "productionTarget": "Produktionsziel",
+                "productionState": "Produktionsstatus"
+            },
+            "messages": {
+                "noDataFound": "Keine Daten gefunden"
+            }
+        }
+    }
 }

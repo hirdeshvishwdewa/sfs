@@ -4,6 +4,7 @@ import { SharedDataService } from '../../shared/shared-data.service';
 import { Subscription } from 'rxjs';
 import { IDeviceDetail } from '../../shared/shared.model';
 import { NotificationService } from 'src/core/notification.service';
+import { TranslateService, TranslationObject } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-device-detail',
@@ -15,9 +16,17 @@ export class DeviceDetailComponent implements OnDestroy {
   subscriptions: Subscription = new Subscription();
   deviceId = "";
   events: IDeviceDetail[] = [];
+  translations: TranslationObject = {};
 
-  constructor(private dataService: SharedDataService, private route: ActivatedRoute, private cdref: ChangeDetectorRef, private notficationService: NotificationService) {
-    this.subscriptions = this.getRouterParams();
+  constructor(
+    private dataService: SharedDataService, 
+    private route: ActivatedRoute, 
+    private cdref: ChangeDetectorRef, 
+    private notficationService: NotificationService,
+    private translateService: TranslateService
+  ) {
+    this.subscriptions.add(this.getRouterParams());
+    this.subscriptions.add(this.getTranslations());
   }
 
   ngOnInit() {
@@ -25,7 +34,9 @@ export class DeviceDetailComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 
   private getRouterParams() {
@@ -46,5 +57,14 @@ export class DeviceDetailComponent implements OnDestroy {
       },
     }
     );
+  }
+
+  private getTranslations(): Subscription {
+    return this.translateService.get([
+      'screen.device.labels.graphYAxisLabel',
+      'screen.device.labels.graphXAxisLabel'
+    ]).subscribe((translations: TranslationObject) => {
+      this.translations = translations;
+    });
   }
 }

@@ -1,15 +1,15 @@
 <div class="card card-scrollable">
     <div class="card-body">
         <h2 class="card-title">
-            Order Details
+            {{ 'screen.order.headings.orderDetails' | translate }}
         </h2>
         <div class="card-description">
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <td>Production Target</td>
-                            <td>Production State</td>
+                            <td>{{ 'screen.order.labels.productionTarget' | translate }}</td>
+                            <td>{{ 'screen.order.labels.productionState' | translate }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -17,10 +17,10 @@
                             <ng-container *ngIf="order; else noData">
                                 <tr>
                                     <td>
-                                        {{ order.productionTarget }}
+                                        {{ order?.productionTarget }}
                                     </td>
                                     <td>
-                                        {{ order.productionState }}
+                                        {{ order?.productionState }}
                                     </td>
                                 </tr>
                             </ng-container>
@@ -39,7 +39,7 @@
         
         <ng-template #noData>
             <tr>
-                <td colspan="2">No devices found.</td>
+                <td colspan="2">{{ 'screen.order.messages.noDataFound' | translate }}</td>
             </tr>
         </ng-template>
     </div>

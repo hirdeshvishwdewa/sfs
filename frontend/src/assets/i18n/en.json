@@ -28,10 +28,24 @@
                 "eventTime": "Event time",
                 "deviceStatus": "Device Status",
                 "devicePPM": "Device PPM",
-                "orderId": "Order Id"
+                "orderId": "Order Id",
+                "graphYAxisLabel": "Parts Per Minute (PPM)",
+                "graphXAxisLabel": "Time"
             },
             "messages": {
                 "couldNotLoadGraph": "Could not load the graph"
+            }
+        },
+        "order": {
+            "headings": {
+                "orderDetails": "Order Details"
+            },
+            "labels": {
+                "productionTarget": "Production Target",
+                "productionState": "Production Status"
+            },
+            "messages": {
+                "noDataFound": "No data found."
             }
         }
     }

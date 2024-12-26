@@ -5,7 +5,7 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="languageDropdown">
         <li *ngFor="let item of items">
-            <a class="dropdown-item" href="#" (click)="optionClickHandler(item)">
+            <a class="dropdown-item" (click)="optionClickHandler(item)">
                 {{ item }}
             </a>
         </li>
